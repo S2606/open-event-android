@@ -27,8 +27,10 @@ public class SpeakersListFragmentViewModel extends ViewModel {
 
     public LiveData<List<Speaker>> getSpeakers(int sortType, String searchText) {
         setSearchText(searchText);
-        if (sortType != speakersListSortType) {
-            filterableRealmLiveData = RealmDataRepository.asFilterableLiveData(realmRepo.getSpeakers(sortOrderSpeaker()));
+        if (sortType != speakersListSortType || filterableRealmLiveData == null) {
+            if(filterableRealmLiveData == null) {
+                filterableRealmLiveData = RealmDataRepository.asFilterableLiveData(realmRepo.getSpeakers(sortOrderSpeaker()));
+            }
             speakersListSortType = sortType;
             loadFilteredSpeakers();
         } else {
